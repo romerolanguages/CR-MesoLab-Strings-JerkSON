@@ -1,6 +1,5 @@
 package io.zipcoder;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,7 +28,7 @@ public class ItemParserTest {
     @Test
     public void parseRawDataIntoStringArrayTest(){
         Integer expectedArraySize = 3;
-        ArrayList<String> items = itemParser.parseRawDataIntoStringArray(rawMultipleItems);
+        ArrayList<String> items = itemParser.parseRawDataIntoItemStringArray(rawMultipleItems);
         Integer actualArraySize = items.size();
         assertEquals(expectedArraySize, actualArraySize);
     }
