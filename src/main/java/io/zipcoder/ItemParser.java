@@ -8,7 +8,10 @@ import java.util.regex.Matcher;
 
 public class ItemParser {
 
+    private int errorCount;
+
     public ItemParser() {
+        this.errorCount = 0;
     }
 
     public ArrayList<String> parseRawDataIntoItemStringArray(String rawData){
@@ -19,35 +22,56 @@ public class ItemParser {
 
     public Item parseStringIntoItem(String rawItem) throws ItemParseException {
 
+        String emptyFieldName = "";
         List<String> keyValuePairsArrayList = findKeyValuePairsInRawItemData(rawItem);
 
         String upToAndIncludingColonString = "\\w+:";
         Pattern upToAndIncludingColonPattern = Pattern.compile(upToAndIncludingColonString);
 
         Matcher nameMatcher = upToAndIncludingColonPattern.matcher(keyValuePairsArrayList.get(0));
-        String name = nameMatcher.replaceAll("");
+        String name = nameMatcher.replaceAll("").toLowerCase();
         String cookiesString = "(c|C)\\w+(s|S)";
         Pattern cookiesPattern = Pattern.compile(cookiesString);
         Matcher cookiesMatcher = cookiesPattern.matcher(name);
         if (cookiesMatcher.find()) {
-            name = "Cookies";
+            name = cookiesMatcher.replaceAll("cookies");
         }
         if (name.equals("")) {
-            name = "empty string";
+            errorCount++;
+            name = "EMPTY";
+            emptyFieldName = "name";
+//            throw new ItemParseException(emptyFieldName);
         }
 
         Matcher priceMatcher = upToAndIncludingColonPattern.matcher(keyValuePairsArrayList.get(1));
         String priceString = priceMatcher.replaceAll("");
+        if (priceString.equals("")) {
+            priceString = "0.00";
+            errorCount++;
+            emptyFieldName = "price";
+//            throw new ItemParseException(emptyFieldName);
+        }
         double price = Double.parseDouble(priceString);
 
         Matcher typeMatcher = upToAndIncludingColonPattern.matcher(keyValuePairsArrayList.get(2));
-        String type = typeMatcher.replaceAll("");
+        String type = typeMatcher.replaceAll("").toLowerCase();
+        if (type.equals("")) {
+            type = "EMPTY";
+            errorCount++;
+            emptyFieldName = "type";
+//            throw new ItemParseException(emptyFieldName);
+        }
 
         Matcher expirationMatcher = upToAndIncludingColonPattern.matcher(keyValuePairsArrayList.get(3));
-        String expiration = expirationMatcher.replaceAll("");
+        String expiration = expirationMatcher.replaceAll("").toLowerCase();
+        if (expiration.equals("")) {
+            expiration = "EMPTY";
+            errorCount++;
+            emptyFieldName = "expiration";
+//            throw new ItemParseException(emptyFieldName);
+        }
 
         Item item = new Item(name, price, type, expiration);
-
         return item;
     }
 
@@ -60,25 +84,4 @@ public class ItemParser {
     private ArrayList<String> splitStringWithRegexPattern(String inputString, String stringPattern){
         return new ArrayList<String>(Arrays.asList(inputString.split(stringPattern)));
     }
-
-    public static void main(String[] args) throws ItemParseException {
-        ItemParser itemParser = new ItemParser();
-
-        String rawSingleItem =    "naMe:;price:3.23;type:Food;expiration:1/25/2016##";
-        String rawSingleItemIrregularSeperatorSample = "naMe:MiLK;price:3.23;type:Food^expiration:1/11/2016##";
-        String rawBrokenSingleItem =    "naMe:Milk;price:3.23;type:Food;expiration:1/25/2016##";
-        String rawMultipleItems = "naMe:Milk;price:3.23;type:Food;expiration:1/25/2016##"
-                                    +"naME:BreaD;price:1.23;type:Food;expiration:1/02/2016##"
-                                    +"NAMe:BrEAD;price:1.23;type:Food;expiration:2/25/2016##";
-
-        List<String> itemArrayList = itemParser.parseRawDataIntoItemStringArray(rawMultipleItems);
-        System.out.println(itemArrayList.toString());
-
-        List<String> keyValuePairsArrayList = itemParser.findKeyValuePairsInRawItemData(rawSingleItem);
-        System.out.println(keyValuePairsArrayList.toString());
-
-        Item testItem = itemParser.parseStringIntoItem(rawSingleItem);
-        System.out.println(testItem);
-    }
-
 }
