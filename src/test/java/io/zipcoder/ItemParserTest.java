@@ -65,6 +65,20 @@ public class ItemParserTest {
     }
 
     @Test
+    public void countItemNameOccurrencesTest() throws ItemParseException {
+        // Given
+        String nameForBread = "bread";
+        int expectedBreadCount = 2;
+        itemParser.parseRawDataIntoItemStringArray(rawMultipleItems);
+        itemParser.createItems();
+        itemParser.addItemsToNameCounter();
+        // When
+        int actualBreadCount = itemParser.getNumberOfNameOccurrences(nameForBread);
+        // Then
+        Assert.assertEquals(expectedBreadCount, actualBreadCount);
+    }
+
+    @Test
     public void parseRawDataIntoStringArrayTest(){
         Integer expectedArraySize = 3;
         ArrayList<String> items = itemParser.parseRawDataIntoItemStringArray(rawMultipleItems);

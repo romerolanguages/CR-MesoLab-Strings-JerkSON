@@ -17,9 +17,9 @@ public class ItemParser {
 
     public ItemParser() {
         this.ipe = new ItemParseException();
-        this.nameCounter = new TreeMap<String, Integer>();
         this.itemStrings = new ArrayList<>();
         this.items = new ArrayList<>();
+        this.nameCounter = new TreeMap<>();
     }
 
     public ItemParseException getIpe() {
@@ -57,6 +57,26 @@ public class ItemParser {
         }
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
+    }
+
+    public void addItemsToNameCounter() {
+        for (Item item : items) {
+            String name = item.getName();
+            if (nameCounter.get(name) == null) {
+                nameCounter.put(name, 1);
+            } else {
+                nameCounter.put(name, nameCounter.get(name) + 1);
+            }
+        }
+    }
+
+    public int getNumberOfNameOccurrences(String name) {
+        int numberOfNameOccurrences = nameCounter.get(name);
+        return numberOfNameOccurrences;
+    }
+
+    public Map<String, Integer> getNameCounter() {
+        return nameCounter;
     }
 
     public Item parseStringIntoItem(String rawItem) throws ItemParseException {
@@ -119,14 +139,5 @@ public class ItemParser {
     private ArrayList<String> splitStringWithRegexPattern(String inputString, String stringPattern){
         return new ArrayList<String>(Arrays.asList(inputString.split(stringPattern)));
     }
-
-    public void countNumberOfNameOccurrences(ArrayList<Item> itemArrayList) {
-
-    }
-
-    public Map<String, Integer> getNameCounter() {
-        return nameCounter;
-    }
-
 
 }
