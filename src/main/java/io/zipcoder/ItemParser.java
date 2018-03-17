@@ -5,19 +5,58 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class ItemParser {
 
-    private int errorCount;
+    private ItemParseException ipe;
+    private List<String> itemStrings;
+    private List<Item> items;
+    private Map<String, Integer> nameCounter;
 
     public ItemParser() {
-        this.errorCount = 0;
+        this.ipe = new ItemParseException();
+        this.nameCounter = new TreeMap<String, Integer>();
+        this.itemStrings = new ArrayList<>();
+        this.items = new ArrayList<>();
+    }
+
+    public ItemParseException getIpe() {
+        return ipe;
     }
 
     public ArrayList<String> parseRawDataIntoItemStringArray(String rawData){
         String stringPattern = "##";
         ArrayList<String> response = splitStringWithRegexPattern(rawData, stringPattern);
+        itemStrings = response;
         return response;
+    }
+
+    public List<String> getItemStrings() {
+        return itemStrings;
+    }
+
+    public void createItems() throws ItemParseException {
+        for (String itemString : itemStrings) {
+            Item item = parseStringIntoItem(itemString);
+            items.add(item);
+        }
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public String itemsAsString() {
+        StringBuilder sb = new StringBuilder();
+        int count = 1;
+        for (Item item : items) {
+            sb.append(count + " " + item.toString() + "\n");
+            count++;
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
     }
 
     public Item parseStringIntoItem(String rawItem) throws ItemParseException {
@@ -37,19 +76,17 @@ public class ItemParser {
             name = cookiesMatcher.replaceAll("cookies");
         }
         if (name.equals("")) {
-            errorCount++;
             name = "EMPTY";
             emptyFieldName = "name";
-//            throw new ItemParseException(emptyFieldName);
+            ipe.logErrorCount(emptyFieldName, rawItem);
         }
 
         Matcher priceMatcher = upToAndIncludingColonPattern.matcher(keyValuePairsArrayList.get(1));
         String priceString = priceMatcher.replaceAll("");
         if (priceString.equals("")) {
             priceString = "0.00";
-            errorCount++;
             emptyFieldName = "price";
-//            throw new ItemParseException(emptyFieldName);
+            ipe.logErrorCount(emptyFieldName, rawItem);
         }
         double price = Double.parseDouble(priceString);
 
@@ -57,18 +94,16 @@ public class ItemParser {
         String type = typeMatcher.replaceAll("").toLowerCase();
         if (type.equals("")) {
             type = "EMPTY";
-            errorCount++;
             emptyFieldName = "type";
-//            throw new ItemParseException(emptyFieldName);
+            ipe.logErrorCount(emptyFieldName, rawItem);
         }
 
         Matcher expirationMatcher = upToAndIncludingColonPattern.matcher(keyValuePairsArrayList.get(3));
         String expiration = expirationMatcher.replaceAll("").toLowerCase();
         if (expiration.equals("")) {
             expiration = "EMPTY";
-            errorCount++;
             emptyFieldName = "expiration";
-//            throw new ItemParseException(emptyFieldName);
+            ipe.logErrorCount(emptyFieldName, rawItem);
         }
 
         Item item = new Item(name, price, type, expiration);
@@ -84,4 +119,14 @@ public class ItemParser {
     private ArrayList<String> splitStringWithRegexPattern(String inputString, String stringPattern){
         return new ArrayList<String>(Arrays.asList(inputString.split(stringPattern)));
     }
+
+    public void countNumberOfNameOccurrences(ArrayList<Item> itemArrayList) {
+
+    }
+
+    public Map<String, Integer> getNameCounter() {
+        return nameCounter;
+    }
+
+
 }

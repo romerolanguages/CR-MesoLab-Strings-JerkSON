@@ -1,5 +1,6 @@
 package io.zipcoder;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,6 +25,43 @@ public class ItemParserTest {
     @Before
     public void setUp(){
         itemParser = new ItemParser();
+    }
+
+    @Test
+    public void getItemStringsTest() {
+        // Given
+        int expectedItemStringsSize = 3;
+        itemParser.parseRawDataIntoItemStringArray(rawMultipleItems);
+        // When
+        int actualItemStringsSize = itemParser.getItemStrings().size();
+        // Then
+        Assert.assertEquals(expectedItemStringsSize, actualItemStringsSize);
+    }
+
+    @Test
+    public void createItemsTest() throws ItemParseException {
+        // Given
+        int expectedItemsSize = 3;
+        itemParser.parseRawDataIntoItemStringArray(rawMultipleItems);
+        itemParser.createItems();
+        // When
+        int actualItemsSize = itemParser.getItems().size();
+        // Then
+        Assert.assertEquals(expectedItemsSize, actualItemsSize);
+    }
+
+    @Test
+    public void itemsAsStringTest() throws ItemParseException {
+        // Given
+        String expectedDisplay = "1 name:milk price:3.23 type:food expiration:1/25/2016" + "\n"
+                               + "2 name:bread price:1.23 type:food expiration:1/02/2016" + "\n"
+                               + "3 name:bread price:1.23 type:food expiration:2/25/2016";
+        itemParser.parseRawDataIntoItemStringArray(rawMultipleItems);
+        itemParser.createItems();
+        // When
+        String actualDisplay = itemParser.itemsAsString();
+        // Then
+        Assert.assertEquals(expectedDisplay, actualDisplay);
     }
 
     @Test
