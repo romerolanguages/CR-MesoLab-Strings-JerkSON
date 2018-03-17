@@ -45,4 +45,10 @@ public class Item {
     public String toString(){
         return "name:" + name + " price:" + price + " type:" + type + " expiration:" + expiration;
     }
+
+    public static void main(String[] args) {
+        Item item = new Item("milk", 3.23, "food", "1/25/2016");
+        String itemAsString = item.toString();
+        System.out.println(itemAsString);
+    }
 }

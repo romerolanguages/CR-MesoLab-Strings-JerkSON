@@ -12,7 +12,26 @@ public class ItemParser {
         return response;
     }
 
+    private ArrayList<String> splitStringWithRegexPattern(String stringPattern, String inputString){
+        return new ArrayList<String>(Arrays.asList(inputString.split(stringPattern)));
+    }
+    
     public Item parseStringIntoItem(String rawItem) throws ItemParseException{
+
+        // rawItem:
+        String rawSingleItem = "naMe:Milk;price:3.23;type:Food;expiration:1/25/2016##";
+        // from above String, must extract:
+        // naMe:Milk;
+        // price:3.23;
+        // type:Food;
+
+        String name = null;
+        double price = 0;
+        String food = null;
+        String expiration = null;
+
+
+
         return null;
     }
 
@@ -22,9 +41,7 @@ public class ItemParser {
         return response;
     }
 
-    private ArrayList<String> splitStringWithRegexPattern(String stringPattern, String inputString){
-        return new ArrayList<String>(Arrays.asList(inputString.split(stringPattern)));
-    }
+
 
 
 
