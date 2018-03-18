@@ -171,6 +171,18 @@ public class ItemParser {
         return sb.toString();
     }
 
+    public String getReportAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (String name : itemOrganizer.keySet()) {
+            if (! name.equals("EMPTY")) {
+                sb.append(itemNameAndCountAsString(name) + "\n");
+                sb.append(pricesAndTheirCountAsString(getPricesAndTheirCount(name)) + "\n");
+            }
+        }
+        sb.append(getIpe().errorCountAsString());
+        return sb.toString();
+    }
+
     public Item parseStringIntoItem(String rawItem) throws ItemParseException {
 
         String emptyFieldName = "";

@@ -21,16 +21,18 @@ public class Main {
         itemParser.createItems();
         itemParser.addNameAndItemsOfSameNameToItemOrganizer();
 
-        System.out.println(itemParser.itemNameAndCountAsString("milk"));
-        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("milk")));
-        System.out.println(itemParser.itemNameAndCountAsString("bread"));
-        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("bread")));
-        System.out.println(itemParser.itemNameAndCountAsString("cookies"));
-        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("cookies")));
-        System.out.println(itemParser.itemNameAndCountAsString("apples"));
-        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("apples")));
-        System.out.println(itemParser.getIpe().errorCountAsString());
+        // Prints report in alphabetical order by name (the prices/counts match output.txt)
+        System.out.println(itemParser.getReportAsString());
 
-
+        // These commands (commented out) will print the same information in the order of output.txt
+//        System.out.println(itemParser.itemNameAndCountAsString("milk"));
+//        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("milk")));
+//        System.out.println(itemParser.itemNameAndCountAsString("bread"));
+//        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("bread")));
+//        System.out.println(itemParser.itemNameAndCountAsString("cookies"));
+//        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("cookies")));
+//        System.out.println(itemParser.itemNameAndCountAsString("apples"));
+//        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("apples")));
+//        System.out.println(itemParser.getIpe().errorCountAsString());
     }
 }
