@@ -117,6 +117,26 @@ public class ItemParserTest {
     }
 
     @Test
+    public void pricesAndTheirCountAsStringTest() throws ItemParseException {
+        // Given
+        String nameForBread = "bread";
+        itemParser.parseRawDataIntoItemStringArray(rawMultipleItems2);
+        itemParser.createItems();
+        itemParser.addNameAndItemsOfSameNameToItemOrganizer();
+        String expectedPricesAndTheirCount = "=============\t\t=============\n" +
+                                             "Price:   " + 3.23 + "\t\tseen: " + 5 + " " + "times" + "\n" +
+                                             "-------------\t\t-------------\n" +
+                                             "Price:   " + 1.23 + "\t\tseen: " + 1 + " " + "time" + "\n" +
+                                             "-------------\t\t-------------";
+        // When
+        int actual323Count = itemParser.getPricesAndTheirCount(nameForBread).get(expected323Price);
+        int actual123Count = itemParser.getPricesAndTheirCount(nameForBread).get(expected123Price);
+        // Then
+        Assert.assertEquals(expected323Count, actual323Count);
+        Assert.assertEquals(expected123Count, actual123Count);
+    }
+
+    @Test
     public void parseRawDataIntoStringArrayTest(){
         Integer expectedArraySize = 3;
         ArrayList<String> items = itemParser.parseRawDataIntoItemStringArray(rawMultipleItems);

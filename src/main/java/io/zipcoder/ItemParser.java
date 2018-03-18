@@ -113,14 +113,13 @@ public class ItemParser {
         return pricesAndTheirCount;
     }
 
-//    public int getNumberOfNameOccurrences(String name) {
-//        int numberOfNameOccurrences = itemOrganizer.get(name);
-//        return numberOfNameOccurrences;
-//    }
-//
-//    public Map<String, Integer> getItemOrganizer() {
-//        return itemOrganizer;
-//    }
+    public String pricesAndTheirCountAsString(Map<Double, Integer> pricesAndTheirCount) {
+        StringBuilder sb = new StringBuilder();
+        String nameTest = "milk";
+
+
+        return null;
+    }
 
     public Item parseStringIntoItem(String rawItem) throws ItemParseException {
 
