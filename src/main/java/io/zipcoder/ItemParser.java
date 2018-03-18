@@ -93,11 +93,24 @@ public class ItemParser {
     }
 
     public String itemNameAndCountAsString(String name) {
+        String timeOrTimes = "times";
         StringBuilder sb = new StringBuilder();
-        for (Entry entry : itemOrganizer.entrySet()) {
-            sb.append("name: " + entry.getKey() + " " + "seen: " + itemOrganizer.get(entry.getKey()).size() + "\n");
+        for (String keyName : itemOrganizer.keySet()) {
+            if (itemOrganizer.get(keyName).size() == 1) {
+                timeOrTimes = "time";
+            }
+            if (keyName.equals(name)) {
+                sb.append("name:   " + capitalizeFirstLetterOnly(name));
+                sb.append("\t\tseen: " + itemOrganizer.get(name).size() + " " + timeOrTimes);
+            }
         }
-        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
+    }
+
+    public String capitalizeFirstLetterOnly(String word) {
+        StringBuilder sb = new StringBuilder();
+        String firstLetterOfWord = word.substring(0,1);
+        sb.append(firstLetterOfWord.toUpperCase() + word.substring(1, word.length()));
         return sb.toString();
     }
 

@@ -111,8 +111,20 @@ public class ItemParserTest {
         itemParser.createItems();
         // When
         itemParser.addNameAndItemsOfSameNameToItemOrganizer();
-        String actualNameAndCount = "";
+        String actualNameAndCount = itemParser.itemNameAndCountAsString(nameForBread);
         // Then
+        Assert.assertEquals(expectedNameAndCount, actualNameAndCount);
+    }
+
+    @Test
+    public void capitalizeFirstLetterOnlyTest() {
+        // Given
+        String word = "word";
+        String expectedWord = "Word";
+        // When
+        String actualWord = itemParser.capitalizeFirstLetterOnly(word);
+        // Then
+        Assert.assertEquals(expectedWord, actualWord);
     }
 
     @Test

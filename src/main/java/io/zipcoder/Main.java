@@ -21,13 +21,14 @@ public class Main {
         itemParser.createItems();
         itemParser.addNameAndItemsOfSameNameToItemOrganizer();
 
-//        System.out.println(itemParser.itemsAsString());
-        System.out.println(itemParser.itemOrganizerAsString());
-
-//        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("milk")));
-//        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("bread")));
-//        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("cookies")));
-//        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("apples")));
+        System.out.println(itemParser.itemNameAndCountAsString("milk"));
+        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("milk")));
+        System.out.println(itemParser.itemNameAndCountAsString("bread"));
+        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("bread")));
+        System.out.println(itemParser.itemNameAndCountAsString("cookies"));
+        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("cookies")));
+        System.out.println(itemParser.itemNameAndCountAsString("apples"));
+        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("apples")));
 
 
 
