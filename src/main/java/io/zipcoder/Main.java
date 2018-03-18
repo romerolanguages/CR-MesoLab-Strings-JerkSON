@@ -19,8 +19,11 @@ public class Main {
         ItemParser itemParser = new ItemParser();
         itemParser.parseRawDataIntoItemStringArray(output);
         itemParser.createItems();
+        itemParser.addNameAndItemsOfSameNameToItemOrganizer();
 
-        System.out.println(itemParser.itemsAsString());
+//        System.out.println(itemParser.itemsAsString());
+
+        System.out.println(itemParser.itemOrganizerAsString());
         System.out.println("*****************************");
         System.out.println(itemParser.getIpe().errorsAsString());
 

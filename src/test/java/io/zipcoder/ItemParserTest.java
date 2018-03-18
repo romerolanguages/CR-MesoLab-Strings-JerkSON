@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -65,18 +66,45 @@ public class ItemParserTest {
     }
 
     @Test
-    public void countItemNameOccurrencesTest() throws ItemParseException {
+    public void getItemsOfSameNameTest() throws ItemParseException {
         // Given
-        String nameForBread = "bread";
-        int expectedBreadCount = 2;
+        String expectedName = "milk";
         itemParser.parseRawDataIntoItemStringArray(rawMultipleItems);
         itemParser.createItems();
-        itemParser.addItemsToNameCounter();
         // When
-        int actualBreadCount = itemParser.getNumberOfNameOccurrences(nameForBread);
+        ArrayList<Item> itemOfSameName = itemParser.getItemsOfSameName(expectedName);
+        String actualName = itemOfSameName.get(0).getName();
         // Then
-        Assert.assertEquals(expectedBreadCount, actualBreadCount);
+        Assert.assertEquals(expectedName, actualName);
     }
+
+    @Test
+    public void addNameAndItemsOfSameNameToItemOrganizerTest() throws ItemParseException {
+        // Given
+        String expectedName = "bread";
+        int expectedNameCount = 2;
+        itemParser.parseRawDataIntoItemStringArray(rawMultipleItems);
+        itemParser.createItems();
+        // When
+        itemParser.addNameAndItemsOfSameNameToItemOrganizer();
+        int actualNameCount = itemParser.getItemOrganizer().get(expectedName).size();
+        // Then
+        Assert.assertEquals(expectedNameCount, actualNameCount);
+    }
+
+//    @Test
+//    public void countItemNameOccurrencesTest() throws ItemParseException {
+//        // Given
+//        String nameForBread = "bread";
+//        int expectedBreadCount = 2;
+//        itemParser.parseRawDataIntoItemStringArray(rawMultipleItems);
+//        itemParser.createItems();
+//        itemParser.addItemsToNameCounter();
+//        // When
+//        int actualBreadCount = itemParser.getNumberOfNameOccurrences(nameForBread);
+//        // Then
+//        Assert.assertEquals(expectedBreadCount, actualBreadCount);
+//    }
 
     @Test
     public void parseRawDataIntoStringArrayTest(){

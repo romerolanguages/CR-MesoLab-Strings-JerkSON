@@ -1,5 +1,8 @@
 package io.zipcoder;
 
+import apple.laf.JRSUIUtils;
+
+import java.rmi.activation.ActivationGroup_Stub;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,19 +10,20 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 public class ItemParser {
 
     private ItemParseException ipe;
     private List<String> itemStrings;
     private List<Item> items;
-    private Map<String, Integer> nameCounter;
+    private TreeMap<String, ArrayList<Item>> itemOrganizer;
 
     public ItemParser() {
         this.ipe = new ItemParseException();
         this.itemStrings = new ArrayList<>();
         this.items = new ArrayList<>();
-        this.nameCounter = new TreeMap<>();
+        this.itemOrganizer = new TreeMap<>();
     }
 
     public ItemParseException getIpe() {
@@ -59,25 +63,47 @@ public class ItemParser {
         return sb.toString();
     }
 
-    public void addItemsToNameCounter() {
+    public ArrayList<Item> getItemsOfSameName(String name) {
+        ArrayList<Item> itemsOfSameName = new ArrayList<>();
         for (Item item : items) {
-            String name = item.getName();
-            if (nameCounter.get(name) == null) {
-                nameCounter.put(name, 1);
-            } else {
-                nameCounter.put(name, nameCounter.get(name) + 1);
+            if (item.getName().equals(name)) {
+                itemsOfSameName.add(item);
+            }
+        }
+        return itemsOfSameName;
+    }
+
+    public void addNameAndItemsOfSameNameToItemOrganizer() {
+        for (Item item : items) {
+            String itemName = item.getName();
+            if (itemOrganizer.get(itemName) == null) {
+                itemOrganizer.put(itemName, getItemsOfSameName(itemName));
             }
         }
     }
 
-    public int getNumberOfNameOccurrences(String name) {
-        int numberOfNameOccurrences = nameCounter.get(name);
-        return numberOfNameOccurrences;
+    public TreeMap<String, ArrayList<Item>> getItemOrganizer() {
+        return itemOrganizer;
     }
 
-    public Map<String, Integer> getNameCounter() {
-        return nameCounter;
+    public String itemOrganizerAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (Entry entry : itemOrganizer.entrySet()) {
+            sb.append("name: " + entry.getKey() + " " + "nameCount: " + itemOrganizer.get(entry.getKey()).size() + "\n"
+            + entry.getValue() + "\n");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
     }
+
+//    public int getNumberOfNameOccurrences(String name) {
+//        int numberOfNameOccurrences = itemOrganizer.get(name);
+//        return numberOfNameOccurrences;
+//    }
+//
+//    public Map<String, Integer> getItemOrganizer() {
+//        return itemOrganizer;
+//    }
 
     public Item parseStringIntoItem(String rawItem) throws ItemParseException {
 
