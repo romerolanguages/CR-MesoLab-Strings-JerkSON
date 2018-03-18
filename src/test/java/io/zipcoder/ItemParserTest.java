@@ -26,6 +26,11 @@ public class ItemParserTest {
                                       +"naME:BreaD;price:3.23;type:Food;expiration:1/02/2016##"
                                       +"NAMe:BrEAD;price:1.23;type:Food;expiration:2/25/2016##";
 
+    private String rawMultipleItems3 = "naMe:Milk;price:3.23;type:Food;expiration:1/25/2016##"
+                                      +"naME:BreaD;price:3.23;type:Food;expiration:1/02/2016##"
+                                      +"naME:BreaD;price:3.23;type:Food;expiration:1/02/2016##"
+                                      +"NAMe:BrEAD;price:1.23;type:Food;expiration:2/25/2016##";
+
     private ItemParser itemParser;
 
     @Before
@@ -98,6 +103,19 @@ public class ItemParserTest {
     }
 
     @Test
+    public void itemNameAndCountAsString() throws ItemParseException {
+        // Given
+        String nameForBread = "bread";
+        String expectedNameAndCount = "name:   Bread\t\tseen: 3 times";
+        itemParser.parseRawDataIntoItemStringArray(rawMultipleItems3);
+        itemParser.createItems();
+        // When
+        itemParser.addNameAndItemsOfSameNameToItemOrganizer();
+        String actualNameAndCount = "";
+        // Then
+    }
+
+    @Test
     public void getPricesAndTheirCountTest() throws ItemParseException {
         // Given
         String nameForBread = "bread";
@@ -120,20 +138,18 @@ public class ItemParserTest {
     public void pricesAndTheirCountAsStringTest() throws ItemParseException {
         // Given
         String nameForBread = "bread";
-        itemParser.parseRawDataIntoItemStringArray(rawMultipleItems2);
+        itemParser.parseRawDataIntoItemStringArray(rawMultipleItems3);
         itemParser.createItems();
         itemParser.addNameAndItemsOfSameNameToItemOrganizer();
         String expectedPricesAndTheirCount = "=============\t\t=============\n" +
-                                             "Price:   " + 3.23 + "\t\tseen: " + 5 + " " + "times" + "\n" +
+                                             "Price:   " + "3.23" + "\t\tseen: " + "2" + " " + "times" + "\n" +
                                              "-------------\t\t-------------\n" +
-                                             "Price:   " + 1.23 + "\t\tseen: " + 1 + " " + "time" + "\n" +
+                                             "Price:   " + "1.23" + "\t\tseen: " + "1" + " " + "time" + "\n" +
                                              "-------------\t\t-------------";
         // When
-        int actual323Count = itemParser.getPricesAndTheirCount(nameForBread).get(expected323Price);
-        int actual123Count = itemParser.getPricesAndTheirCount(nameForBread).get(expected123Price);
+        String actualPATC = itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount(nameForBread));
         // Then
-        Assert.assertEquals(expected323Count, actual323Count);
-        Assert.assertEquals(expected123Count, actual123Count);
+        Assert.assertEquals(expectedPricesAndTheirCount, actualPATC);
     }
 
     @Test

@@ -22,8 +22,16 @@ public class Main {
         itemParser.addNameAndItemsOfSameNameToItemOrganizer();
 
 //        System.out.println(itemParser.itemsAsString());
-
         System.out.println(itemParser.itemOrganizerAsString());
+
+//        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("milk")));
+//        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("bread")));
+//        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("cookies")));
+//        System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("apples")));
+
+
+
+
         System.out.println("*****************************");
         System.out.println(itemParser.getIpe().errorsAsString());
 

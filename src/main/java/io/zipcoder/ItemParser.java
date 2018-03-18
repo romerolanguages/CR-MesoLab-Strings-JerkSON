@@ -3,13 +3,9 @@ package io.zipcoder;
 import apple.laf.JRSUIUtils;
 
 import java.rmi.activation.ActivationGroup_Stub;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.Map.Entry;
 
 public class ItemParser {
@@ -96,8 +92,17 @@ public class ItemParser {
         return sb.toString();
     }
 
+    public String itemNameAndCountAsString(String name) {
+        StringBuilder sb = new StringBuilder();
+        for (Entry entry : itemOrganizer.entrySet()) {
+            sb.append("name: " + entry.getKey() + " " + "seen: " + itemOrganizer.get(entry.getKey()).size() + "\n");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
+    }
+
     public Map<Double, Integer> getPricesAndTheirCount(String name) {
-        Map<Double, Integer> pricesAndTheirCount = new TreeMap<>();
+        Map<Double, Integer> pricesAndTheirCount = new TreeMap<>(Collections.reverseOrder());
         for (String nameKey : itemOrganizer.keySet()) {
             if (nameKey.equals(name)) {
                 for (int i = 0; i < itemOrganizer.get(nameKey).size(); i++) {
@@ -114,11 +119,26 @@ public class ItemParser {
     }
 
     public String pricesAndTheirCountAsString(Map<Double, Integer> pricesAndTheirCount) {
+
+        int count = 0;
         StringBuilder sb = new StringBuilder();
-        String nameTest = "milk";
-
-
-        return null;
+        sb.append("=============\t\t=============\n");
+        for (Double price : pricesAndTheirCount.keySet()) {
+            String timeOrTimes = "times";
+            if (pricesAndTheirCount.get(price) == 1) {
+                timeOrTimes = "time";
+            }
+            if (price != 0) {
+                sb.append("Price:   " + price + "\t\tseen: " + pricesAndTheirCount.get(price) + " " + timeOrTimes + "\n");
+                sb.append("-------------\t\t-------------\n");
+            }
+            count++;
+        }
+        if (count > 1) {
+            sb.delete(sb.length() - 29, sb.length());
+        }
+//        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
     }
 
     public Item parseStringIntoItem(String rawItem) throws ItemParseException {
