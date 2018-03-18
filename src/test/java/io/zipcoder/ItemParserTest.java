@@ -17,6 +17,7 @@ public class ItemParserTest {
 
     // I "broke" the original String value (I removed "Milk"), because the original String value was good
     private String rawBrokenSingleItem =    "naMe:;price:3.23;type:Food;expiration:1/25/2016##";
+    private String rawBrokenSingleItem2 =   "naMe:Milk;price:;type:Food;expiration:1/25/2016##";
 
     private String rawMultipleItems = "naMe:Milk;price:3.23;type:Food;expiration:1/25/2016##"
                                       +"naME:BreaD;price:1.23;type:Food;expiration:1/02/2016##"
@@ -114,6 +115,21 @@ public class ItemParserTest {
         String actualNameAndCount = itemParser.itemNameAndCountAsString(nameForBread);
         // Then
         Assert.assertEquals(expectedNameAndCount, actualNameAndCount);
+    }
+
+    @Test
+    public void countNumberOfEmptyPriceFieldsTest() throws ItemParseException {
+        // Given
+        String expectedName = "milk";
+        int expectedEmptyPrice = 1;
+        itemParser.parseRawDataIntoItemStringArray(rawBrokenSingleItem2);
+        itemParser.createItems();
+        // When
+        itemParser.addNameAndItemsOfSameNameToItemOrganizer();
+        int actualEmptyPrice = itemParser.countNumberOfEmptyPriceFields(expectedName);
+        // Then
+        Assert.assertEquals(expectedEmptyPrice, actualEmptyPrice);
+
     }
 
     @Test

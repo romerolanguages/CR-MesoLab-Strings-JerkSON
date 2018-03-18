@@ -32,6 +32,14 @@ public class ItemParseException extends Exception {
         return errors;
     }
 
+    public String errorCountAsString() {
+        String s = String.format("%-13s", "Errors");
+        StringBuilder sb = new StringBuilder();
+        sb.append(s);
+        sb.append("\t\t" + "seen: " + errorCount + " times");
+        return sb.toString();
+    }
+
     public String errorsAsString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Error count: " + errorCount + "\n");

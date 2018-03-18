@@ -29,12 +29,8 @@ public class Main {
         System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("cookies")));
         System.out.println(itemParser.itemNameAndCountAsString("apples"));
         System.out.println(itemParser.pricesAndTheirCountAsString(itemParser.getPricesAndTheirCount("apples")));
+        System.out.println(itemParser.getIpe().errorCountAsString());
 
-
-
-
-        System.out.println("*****************************");
-        System.out.println(itemParser.getIpe().errorsAsString());
 
     }
 }

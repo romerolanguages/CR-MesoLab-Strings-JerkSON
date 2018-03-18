@@ -100,11 +100,28 @@ public class ItemParser {
                 timeOrTimes = "time";
             }
             if (keyName.equals(name)) {
-                sb.append("name:   " + capitalizeFirstLetterOnly(name));
-                sb.append("\t\tseen: " + itemOrganizer.get(name).size() + " " + timeOrTimes);
+                int numberOfEmptyPriceFields = countNumberOfEmptyPriceFields(name);
+                int actualCount = itemOrganizer.get(name).size() - numberOfEmptyPriceFields;
+                String s = String.format("%-5s%8s", "name:", capitalizeFirstLetterOnly(name));
+                sb.append(s);
+                sb.append("\t\tseen: " + actualCount + " " + timeOrTimes);
             }
         }
         return sb.toString();
+    }
+
+    public int countNumberOfEmptyPriceFields(String name) {
+        int count = 0;
+        for (String keyName : itemOrganizer.keySet()) {
+            if (keyName.equals(name)) {
+                for (Item item : itemOrganizer.get(keyName)) {
+                    if (item.getPrice() == 0) {
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
     }
 
     public String capitalizeFirstLetterOnly(String word) {
