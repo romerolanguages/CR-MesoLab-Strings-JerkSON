@@ -21,6 +21,11 @@ public class ItemParserTest {
     private String rawMultipleItems = "naMe:Milk;price:3.23;type:Food;expiration:1/25/2016##"
                                       +"naME:BreaD;price:1.23;type:Food;expiration:1/02/2016##"
                                       +"NAMe:BrEAD;price:1.23;type:Food;expiration:2/25/2016##";
+
+    private String rawMultipleItems2 = "naMe:Milk;price:3.23;type:Food;expiration:1/25/2016##"
+                                      +"naME:BreaD;price:3.23;type:Food;expiration:1/02/2016##"
+                                      +"NAMe:BrEAD;price:1.23;type:Food;expiration:2/25/2016##";
+
     private ItemParser itemParser;
 
     @Before
@@ -92,19 +97,24 @@ public class ItemParserTest {
         Assert.assertEquals(expectedNameCount, actualNameCount);
     }
 
-//    @Test
-//    public void countItemNameOccurrencesTest() throws ItemParseException {
-//        // Given
-//        String nameForBread = "bread";
-//        int expectedBreadCount = 2;
-//        itemParser.parseRawDataIntoItemStringArray(rawMultipleItems);
-//        itemParser.createItems();
-//        itemParser.addItemsToNameCounter();
-//        // When
-//        int actualBreadCount = itemParser.getNumberOfNameOccurrences(nameForBread);
-//        // Then
-//        Assert.assertEquals(expectedBreadCount, actualBreadCount);
-//    }
+    @Test
+    public void getPricesAndTheirCountTest() throws ItemParseException {
+        // Given
+        String nameForBread = "bread";
+        double expected323Price = 3.23;
+        double expected123Price = 1.23;
+        int expected323Count = 1;
+        int expected123Count = 1;
+        itemParser.parseRawDataIntoItemStringArray(rawMultipleItems2);
+        itemParser.createItems();
+        itemParser.addNameAndItemsOfSameNameToItemOrganizer();
+        // When
+        int actual323Count = itemParser.getPricesAndTheirCount(nameForBread).get(expected323Price);
+        int actual123Count = itemParser.getPricesAndTheirCount(nameForBread).get(expected123Price);
+        // Then
+        Assert.assertEquals(expected323Count, actual323Count);
+        Assert.assertEquals(expected123Count, actual123Count);
+    }
 
     @Test
     public void parseRawDataIntoStringArrayTest(){

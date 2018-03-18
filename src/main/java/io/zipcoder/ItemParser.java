@@ -96,6 +96,23 @@ public class ItemParser {
         return sb.toString();
     }
 
+    public Map<Double, Integer> getPricesAndTheirCount(String name) {
+        Map<Double, Integer> pricesAndTheirCount = new TreeMap<>();
+        for (String nameKey : itemOrganizer.keySet()) {
+            if (nameKey.equals(name)) {
+                for (int i = 0; i < itemOrganizer.get(nameKey).size(); i++) {
+                    double price = itemOrganizer.get(nameKey).get(i).getPrice();
+                    if (pricesAndTheirCount.get(price) == null) {
+                        pricesAndTheirCount.put(price, 1);
+                    } else {
+                        pricesAndTheirCount.put(price, pricesAndTheirCount.get(price) + 1);
+                    }
+                }
+            }
+        }
+        return pricesAndTheirCount;
+    }
+
 //    public int getNumberOfNameOccurrences(String name) {
 //        int numberOfNameOccurrences = itemOrganizer.get(name);
 //        return numberOfNameOccurrences;
